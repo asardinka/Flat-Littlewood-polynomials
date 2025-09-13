@@ -64,4 +64,4 @@ int main() {
     fftw_free(fftB);
     fftw_free(fftC);
 }
-//g++ main.cpp -o main.exe -lfftw3 -lm && ./main.exe
+//g++ main.cpp -o src/main.exe -lfftw3 -lm && ./src/main.exe
