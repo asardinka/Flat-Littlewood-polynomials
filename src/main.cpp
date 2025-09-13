@@ -1,67 +1,54 @@
-#include <iostream>
+#include <sndfile.h>
 #include <vector>
+#include <iostream>
 #include <cmath>
-#include <fftw3.h>
-
-
 
 int main() {
-    // Пример: два многочлена
-    // A(x) = 1 + 2x + 3x^2
-    // B(x) = 2 + x
-    std::vector<double> A = {-1, 2, 3, 0, 4 ,7};
-    std::vector<double> B = {2, -1.5, 0, 0 , 12.3};
+    const char* inputFile = "./files/original_test1.wav";
+    const char* outputFile = "./files/processed_test1.wav";
 
-    // Размер FFT: степень результата = deg(A)+deg(B)
-    int n = A.size() + B.size() - 1; // степень результата
-
-    // Выделяем память под комплексные массивы
-    fftw_complex *fftA = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * n);
-    fftw_complex *fftB = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * n);
-    fftw_complex *fftC = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * n);
-
-    // Заполняем входные массивы (imag = 0)
-    for (int i = 0; i < n; i++) {
-        fftA[i][0] = (i < A.size()) ? A[i] : 0.0;
-        fftA[i][1] = 0.0;
-
-        fftB[i][0] = (i < B.size()) ? B[i] : 0.0;
-        fftB[i][1] = 0.0;
+    SF_INFO sfinfo;
+    SNDFILE* infile = sf_open(inputFile, SFM_READ, &sfinfo);
+    if (!infile) {
+        std::cerr << "Error in opening file: " << sf_strerror(nullptr) << "\n";
+        return 1;
     }
 
-    // Планируем FFT
-    fftw_plan planA = fftw_plan_dft_1d(n, fftA, fftA, FFTW_FORWARD, FFTW_ESTIMATE);
-    fftw_plan planB = fftw_plan_dft_1d(n, fftB, fftB, FFTW_FORWARD, FFTW_ESTIMATE);
+    // 1. Читаем сэмплы в float [-1,1]
+    std::vector<float> samples(sfinfo.frames * sfinfo.channels);
+    sf_readf_float(infile, samples.data(), sfinfo.frames);
+    sf_close(infile);
 
-    // Прямое FFT
-    fftw_execute(planA);
-    fftw_execute(planB);
+    std::cout << "Прочитано " << sfinfo.frames << " фреймов, "
+              << sfinfo.channels << " канал(ов), "
+              << "частота: " << sfinfo.samplerate << "\n";
 
-    // Покоэффициентное умножение в спектральной области
-    for (int i = 0; i < n; i++) {
-        double real = fftA[i][0]*fftB[i][0] - fftA[i][1]*fftB[i][1];
-        double imag = fftA[i][0]*fftB[i][1] + fftA[i][1]*fftB[i][0];
-        fftC[i][0] = real;
-        fftC[i][1] = imag;
+    // Здесь можно работать с samples в формате [-1,1]
+
+    // 2. Преобразуем обратно в int16 для сохранения
+    std::vector<short> intSamples(samples.size());
+    for (size_t i = 0; i < samples.size(); ++i) {
+        // Клиппинг, чтобы не выйти за пределы [-1,1]
+        float x = std::fmax(-1.0f, std::fmin(1.0f, samples[i]));
+        intSamples[i] = static_cast<short>(std::round(x * 32767.0f));
     }
 
-    // Обратное FFT
-    fftw_plan planC = fftw_plan_dft_1d(n, fftC, fftC, FFTW_BACKWARD, FFTW_ESTIMATE);
-    fftw_execute(planC);
-
-    // Выводим результат (нормируем на n)
-    std::cout << "Результат перемножения:\n";
-    for (int i = 0; i < A.size() + B.size() - 1; i++) {
-        double coeff = fftC[i][0] / n; // действительная часть
-        std::cout << round(coeff) << "x^" << i << " + "; // округляем до целых
+    // 3. Сохраняем новый WAV
+    SF_INFO outInfo = sfinfo; // копируем метаданные
+    SNDFILE* outfile = sf_open(outputFile, SFM_WRITE, &outInfo);
+    if (!outfile) {
+        std::cerr << "Error in creating file: " << sf_strerror(nullptr) << "\n";
+        return 1;
     }
 
-    // Очистка
-    fftw_destroy_plan(planA);
-    fftw_destroy_plan(planB);
-    fftw_destroy_plan(planC);
-    fftw_free(fftA);
-    fftw_free(fftB);
-    fftw_free(fftC);
+    sf_writef_short(outfile, intSamples.data(), sfinfo.frames);
+    sf_close(outfile);
+
+    std::cout << "File successfully saved: " << outputFile << "\n";
+
+    return 0;
 }
-//g++ main.cpp -o src/main.exe -lfftw3 -lm && ./src/main.exe
+
+
+
+//g++ src/main.cpp -o src/main.exe -lfftw3 -lsndfile -lm && ./src/main.exe
