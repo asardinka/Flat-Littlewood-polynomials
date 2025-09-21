@@ -25,7 +25,11 @@ public:
         setDegree();
     }
 
-    size_t polynomialDegree() const {return degree;}
+    size_t Degree() const {return degree;}
+    size_t size() const { return coefficients.size(); }
+
+    auto begin() const { return coefficients.begin(); }
+    auto end()   const { return coefficients.end(); }
 
     int operator[](size_t i) const {
         if (i > degree)
@@ -35,6 +39,10 @@ public:
     }
 
     const std::vector<int8_t>& getCoefficients() const {
+        return coefficients;
+    }
+
+    operator const std::vector<int8_t>&() const {
         return coefficients;
     }
 

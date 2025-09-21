@@ -1,23 +1,31 @@
-#include <sndfile.h>
+#include <cmath>
 #include <vector>
 #include <iostream>
-#include <cmath>
+#include <sndfile.h>
+
 #include "Tester.hpp"
+#include "AutoCorrelation.hpp"
 #include "LittlewoodPolynomial.hpp"
 
 
 
 
 int main() {
+
+    // auto naive = Autocorrelation<int8_t>::computeNaive(poly);
+    // auto fft = Autocorrelation<int8_t>::computeFFT(poly);
     
-    LittlewoodPolynomial poly = LittlewoodPolynomial::randomPolynomial(5);
+    for (int i = 1; i<=100; ++i){
+        LittlewoodPolynomial poly = LittlewoodPolynomial::randomPolynomial(i);
 
-    std::cout << poly[2] << std::endl;
+        Tester tester(10);
+        
+        std::cout << "Naive autocorrelation test " << std::endl;
+        double average_naive = tester(&Autocorrelation<int8_t>::computeNaive, poly); std::cout << std::endl;
 
-    //Tester tester(5, Tester::TimeUnit::MILLISECONDS);
-
-    //tester([&poly](size_t i) {return poly.getCoefficient(i);}, 1);
-
+        std::cout << "FFT autocorrelation test " << std::endl;
+        double average_fft = tester(&Autocorrelation<int8_t>::computeFFT, poly);
+    }
 
     return 0;
 }

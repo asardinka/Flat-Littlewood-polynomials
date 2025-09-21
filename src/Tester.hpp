@@ -22,7 +22,7 @@ public:
     ~Tester() {}
 
     template<typename Func, typename... Args>
-    auto operator()(Func func, Args&&... args) const {
+    double operator()(Func func, Args&&... args) const {
         double total_time = 0.0;
 
         for (int i = 0; i < repeat; ++i) {
@@ -46,6 +46,8 @@ public:
 
         if (repeat > 1)
             std::cout << "Average time: " << total_time / repeat << ((unit == TimeUnit::MILLISECONDS) ? " ms" : " s") << "\n";
+        
+        return total_time;
     }
 
     void setRepeat(int new_repeat){
