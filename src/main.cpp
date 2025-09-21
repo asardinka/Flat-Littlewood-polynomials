@@ -7,25 +7,28 @@
 #include "AutoCorrelation.hpp"
 #include "LittlewoodPolynomial.hpp"
 
+using namespace std;
 
-
+template <typename T>
+ostream &operator<<(ostream &os, const vector<T> vec){
+    for (auto i : vec)
+        os << i << " ";
+    cout << endl;
+    return os;
+}
 
 int main() {
-
-    // auto naive = Autocorrelation<int8_t>::computeNaive(poly);
-    // auto fft = Autocorrelation<int8_t>::computeFFT(poly);
     
-    for (int i = 1; i<=100; ++i){
-        LittlewoodPolynomial poly = LittlewoodPolynomial::randomPolynomial(i);
 
-        Tester tester(10);
-        
-        std::cout << "Naive autocorrelation test " << std::endl;
-        double average_naive = tester(&Autocorrelation<int8_t>::computeNaive, poly); std::cout << std::endl;
+    LittlewoodPolynomial poly = {1, 1, 1, -1, -1};
 
-        std::cout << "FFT autocorrelation test " << std::endl;
-        double average_fft = tester(&Autocorrelation<int8_t>::computeFFT, poly);
-    }
+    auto autocorr = Autocorrelation<int8_t>::computeFFT(poly);
+    
+    cout << "Autocorrelation: " << autocorr;
+    
+
+
+
 
     return 0;
 }
