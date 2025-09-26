@@ -17,6 +17,12 @@ std::ostream &operator<<(std::ostream &os, const std::vector<T> vec){
 }
 
 void autocorrelationTest() {
+
+    // Временной тест вычисления автокорреляции на случайном  многочлене степени n
+    // Рассматриваются степени от 10 до 500 с шагом 10
+    // Для каждой степени производится вычисление автокорреляции 100 раз и вычисляется среднее время выполнения в миллисекундах
+    // Результаты сохраняются в файл autocorrelation_times.csv
+
     std::ofstream fout("./files/autocorrelation_times.csv");
     fout << "n,naive,fft\n";
 
@@ -40,6 +46,12 @@ void autocorrelationTest() {
 }
 
 void autocorrelationFileTest() {
+
+    // Вычисление автокорреляции для многочлена 1_000_000 степени
+    // Результаты сохраняются в файл autocorrelation_result.txt
+    // Вычисляется среднее время выполения в миллисекундах на основве 10 запусков
+    // Мой результат 243.464 ms
+
     std::ifstream fin("./files/coeffs.txt");
     if (!fin) throw std::runtime_error("Cannot open file");
 
@@ -72,6 +84,8 @@ void autocorrelationFileTest() {
 }
 
 void shapiroTest(size_t degree = 255){
+    // Построение многочленов Шапиро и случайного многочлена для анализа
+
     LittlewoodPolynomial r_poly = LittlewoodPolynomial::randomPolynomial(degree);
     LittlewoodPolynomial s_poly = LittlewoodPolynomial::shapiroPolynomial(degree);
 
@@ -81,10 +95,11 @@ void shapiroTest(size_t degree = 255){
 
 int main() {
 
-    autocorrelationTest();
-
+    autocorrelationFileTest();
 
     return 0;
 }
-//g++ src/tests.cpp -o src/tests.exe -lfftw3&& ./src/tests.exe
+
+// Запуск
+// g++ src/tests.cpp -o src/tests.exe -lfftw3&& ./src/tests.exe
 
