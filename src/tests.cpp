@@ -72,20 +72,20 @@ void autocorrelationFileTest() {
 }
 
 int main() {
-    size_t degree = 15;
+    size_t degree = 255;
 
     LittlewoodPolynomial r_poly = LittlewoodPolynomial::randomPolynomial(degree);
-    LittlewoodPolynomial f_poly = LittlewoodPolynomial::flatPolynomial(degree);
+    LittlewoodPolynomial f_poly = LittlewoodPolynomial::shapiroPolynomial(degree);
 
     Tester::saveVectorToFile(r_poly.getCoefficients(), "./files/random_poly.txt");
     Tester::saveVectorToFile(f_poly.getCoefficients(), "./files/flat_poly.txt");
-
+/*
     std::cout << "Random polynomial: " << r_poly << std::endl;
     std::cout << "auto correlation for random polynomial: " << Autocorrelation<int8_t>::computeFFT(r_poly) << std::endl << std::endl;
 
     std::cout << "Flat polynomial: " << f_poly << std::endl;
     std::cout << "auto correlation for flat polynomial: " << Autocorrelation<int8_t>::computeFFT(f_poly) << std::endl << std::endl;
-
+*/
 
     return 0;
 }

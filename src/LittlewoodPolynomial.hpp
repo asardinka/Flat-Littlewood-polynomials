@@ -61,15 +61,24 @@ public:
         return poly;
     }
 
-    static LittlewoodPolynomial flatPolynomial(size_t degree) {
-        LittlewoodPolynomial poly(degree);
-
-        for (size_t i = 0; i <= degree; ++i)
-            poly[i] = rudinShapiroCoeff(i);
+    static LittlewoodPolynomial shapiroPolynomial(size_t degree) {
         
+        if (((degree + 1) & degree ) != 0) 
+            throw std::invalid_argument("Degree must be a power of 2 - 1");
+
+        LittlewoodPolynomial poly(degree);
+        for (size_t k = 0; k <= degree; ++k) {
+            size_t x = k;
+            int count = 0;
+            while (x > 0) {
+                if ((x & 3) == 3)
+                    count++;
+                x >>= 1;
+            }
+            poly.coefficients[k] = (count % 2 == 0 ? 1 : -1);
+        }
         return poly;
     }
-
     
     friend std::ostream& operator<<(std::ostream& os, const LittlewoodPolynomial& poly);
     
@@ -82,14 +91,6 @@ private:
         degree = coefficients.size() - 1;
     }
 
-    static inline int8_t rudinShapiroCoeff(size_t k) {
-        int count = 0;
-        while (k > 0) {
-            if ((k & 3) == 3) ++count;
-            k>>=1;
-        }
-        return (count % 2 == 0) ? 1 : -1;
-    }
 };
 
 std::ostream& operator<<(std::ostream& os, const LittlewoodPolynomial& poly) {
