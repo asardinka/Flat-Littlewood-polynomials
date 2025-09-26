@@ -8,6 +8,14 @@
 #include "AutoCorrelation.hpp"
 #include "LittlewoodPolynomial.hpp"
 
+template <typename T>
+std::ostream &operator<<(std::ostream &os, const std::vector<T> vec){
+    for (auto i : vec)
+        os << i << " ";
+    std::cout << std::endl;
+    return os;
+}
+
 void autocorrelationTest() {
     std::ofstream fout("./files/autocorrelation_times.csv");
     fout << "n,naive,fft\n";
@@ -64,7 +72,19 @@ void autocorrelationFileTest() {
 }
 
 int main() {
-    autocorrelationFileTest();
+    size_t degree = 15;
+
+    LittlewoodPolynomial r_poly = LittlewoodPolynomial::randomPolynomial(degree);
+    LittlewoodPolynomial f_poly = LittlewoodPolynomial::flatPolynomial(degree);
+
+    Tester::saveVectorToFile(r_poly.getCoefficients(), "./files/random_poly.txt");
+    Tester::saveVectorToFile(f_poly.getCoefficients(), "./files/flat_poly.txt");
+
+    std::cout << "Random polynomial: " << r_poly << std::endl;
+    std::cout << "auto correlation for random polynomial: " << Autocorrelation<int8_t>::computeFFT(r_poly) << std::endl << std::endl;
+
+    std::cout << "Flat polynomial: " << f_poly << std::endl;
+    std::cout << "auto correlation for flat polynomial: " << Autocorrelation<int8_t>::computeFFT(f_poly) << std::endl << std::endl;
 
 
     return 0;

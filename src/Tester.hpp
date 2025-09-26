@@ -2,6 +2,7 @@
 #include <chrono>
 #include <functional>
 #include <iostream>
+#include <fstream>
 
 class Tester{
 public:
@@ -58,6 +59,22 @@ public:
     }
 
     void setTimeUnit(TimeUnit new_unit) { unit = new_unit; }
+
+    template<typename T>
+    static void saveVectorToFile(const std::vector<T>& vec, const std::string& filename = "test_file.txt") {
+        std::ofstream out(filename);
+        if (!out.is_open())
+            throw std::runtime_error("Cannot open file " + filename);
+
+        for (size_t i = 0; i < vec.size(); ++i) {
+            out << static_cast<int>(vec[i]);
+            if (i + 1 != vec.size())
+                out << " ";
+        }
+        out << std::endl;
+        out.close();
+        std::cout << "Vector saved to " << filename << "\n";
+    }
 
 private: 
     int repeat; 

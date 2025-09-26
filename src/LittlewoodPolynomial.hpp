@@ -8,6 +8,9 @@
 class LittlewoodPolynomial {
 public:
     LittlewoodPolynomial() {}
+
+    explicit LittlewoodPolynomial(size_t d) : degree(d), coefficients(d + 1, 1) {}
+    
     LittlewoodPolynomial(std::vector<int8_t> coeffs) {
         for (auto c : coeffs)
             if (c != 1 && c != -1)
@@ -16,6 +19,7 @@ public:
         coefficients = coeffs;
         setDegree();
     }
+
     LittlewoodPolynomial(std::initializer_list<int8_t> coeffs) {
         for (auto c : coeffs)
             if (c != 1 && c != -1)
@@ -31,8 +35,8 @@ public:
     auto begin() const { return coefficients.begin(); }
     auto end()   const { return coefficients.end(); }
 
-    int operator[](size_t i) const {
-        if (i > degree)
+    int8_t& operator[](size_t i) {
+        if (i > coefficients.size())
             throw std::out_of_range("Index out of range");
         
         return coefficients[i];
@@ -42,29 +46,30 @@ public:
         return coefficients;
     }
 
-    operator const std::vector<int8_t>&() const {
-        return coefficients;
-    }
+    operator const std::vector<int8_t>&() const { return coefficients; }
 
     static LittlewoodPolynomial randomPolynomial(size_t degree) {
-        std::vector<int8_t> coeffs(degree + 1);
+        LittlewoodPolynomial poly(degree);
         std::random_device rd;
         std::mt19937 gen(rd());
         std::uniform_int_distribution<int> dist(0, 1);
 
         for (size_t i = 0; i <= degree; ++i) {
-            coeffs[i] = dist(gen) ? 1 : -1;
+            poly[i] = dist(gen) ? 1 : -1;
         }
 
-        return LittlewoodPolynomial(coeffs);
+        return poly;
     }
 
+    static LittlewoodPolynomial flatPolynomial(size_t degree) {
+        LittlewoodPolynomial poly(degree);
 
-    int8_t getCoefficient(size_t i) const {
-        return coefficients[i];
+        for (size_t i = 0; i <= degree; ++i)
+            poly[i] = rudinShapiroCoeff(i);
+        
+        return poly;
     }
 
-    ~LittlewoodPolynomial() {}
     
     friend std::ostream& operator<<(std::ostream& os, const LittlewoodPolynomial& poly);
     
@@ -77,7 +82,14 @@ private:
         degree = coefficients.size() - 1;
     }
 
-
+    static inline int8_t rudinShapiroCoeff(size_t k) {
+        int count = 0;
+        while (k > 0) {
+            if ((k & 3) == 3) ++count;
+            k>>=1;
+        }
+        return (count % 2 == 0) ? 1 : -1;
+    }
 };
 
 std::ostream& operator<<(std::ostream& os, const LittlewoodPolynomial& poly) {
