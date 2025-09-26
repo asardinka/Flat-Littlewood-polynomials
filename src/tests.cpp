@@ -1,3 +1,5 @@
+// Исполняемый файл для тестов
+
 #include <cmath>
 #include <vector>
 #include <fstream>
