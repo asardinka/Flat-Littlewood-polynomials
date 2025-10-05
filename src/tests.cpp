@@ -33,10 +33,10 @@ void autocorrelationTest() {
     for (int n = 10; n <= 500; n += 10) {
         LittlewoodPolynomial poly = LittlewoodPolynomial::randomPolynomial(n);
 
-
         std::cout << "Naive autocorrelation test n=" << n << std::endl;
         double average_naive = tester(&Autocorrelation<int8_t>::computeNaive, poly); std::cout << std::endl;
 
+        std::cout << "FFT autocorrelation test n=" << n << std::endl;
         auto dummy = Autocorrelation<int8_t>::computeFFT(poly);
         double average_fft = tester(&Autocorrelation<int8_t>::computeFFT, poly);
 
@@ -47,7 +47,7 @@ void autocorrelationTest() {
     std::cout << "Data saved to autocorrelation_times.csv\n";
 }
 
-void autocorrelationFileTest() {
+void autocorrelationFileTest(int repeat = 10) {
 
     // Вычисление автокорреляции для многочлена 1_000_000 степени
     // Результаты сохраняются в файл autocorrelation_result.txt
@@ -75,13 +75,13 @@ void autocorrelationFileTest() {
     
     std::vector<double> result = Autocorrelation<int8_t>::computeFFT(poly);
 
-    Tester tester(10);
+    Tester tester(repeat);
     double average_fft = tester(&Autocorrelation<int8_t>::computeFFT, poly);
 
     std::ofstream fout("./files/autocorrelation_result.txt");
-    for (auto r : result) {
+    for (auto r : result)
         fout << r << " ";
-    }
+    
     fout.close();
 }
 
@@ -91,8 +91,8 @@ void shapiroTest(size_t degree = 255){
     LittlewoodPolynomial r_poly = LittlewoodPolynomial::randomPolynomial(degree);
     LittlewoodPolynomial s_poly = LittlewoodPolynomial::shapiroPolynomial(degree);
 
-    Tester::saveVectorToFile(r_poly.getCoefficients(), "./files/random_poly.txt");
-    Tester::saveVectorToFile(s_poly.getCoefficients(), "./files/flat_poly.txt");
+    Tester::saveVectorToFile(r_poly.getCoefficients(), "./files/random_polynimial.txt");
+    Tester::saveVectorToFile(s_poly.getCoefficients(), "./files/shapiro_polynomial.txt");
 }
 
 int main() {

@@ -34,6 +34,8 @@ public:
         setDegree();
     }
 
+    LittlewoodPolynomial(const LittlewoodPolynomial& poly) : degree(poly.degree), coefficients(poly.coefficients) {}
+
     size_t Degree() const {return degree;}
     size_t size() const { return coefficients.size(); }
 
@@ -59,9 +61,8 @@ public:
         std::mt19937 gen(rd());
         std::uniform_int_distribution<int> dist(0, 1);
 
-        for (size_t i = 0; i <= degree; ++i) {
+        for (size_t i = 0; i <= degree; ++i)
             poly[i] = dist(gen) ? 1 : -1;
-        }
 
         return poly;
     }

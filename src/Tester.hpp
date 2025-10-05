@@ -23,9 +23,7 @@ public:
 
     Tester(int r = 1, TimeUnit unit = TimeUnit::MILLISECONDS): repeat(r > 0 ? r : 1), unit(unit)
     {
-        if (r <= 0) {
-            std::cerr << "Warning: invalid repeat value. The default value is set to 1.\n";
-        }
+        if (r <= 0) std::cerr << "Warning: invalid repeat value. The default value is set to 1.\n";
     }
 
     template<typename Func, typename... Args>
@@ -69,8 +67,7 @@ public:
     template<typename T>
     static void saveVectorToFile(const std::vector<T>& vec, const std::string& filename = "test_file.txt") {
         std::ofstream out(filename);
-        if (!out.is_open())
-            throw std::runtime_error("Cannot open file " + filename);
+        if (!out.is_open()) throw std::runtime_error("Cannot open file " + filename);
 
         for (size_t i = 0; i < vec.size(); ++i) {
             out << static_cast<int>(vec[i]);
