@@ -97,7 +97,6 @@ void shapiroTest(size_t degree = 255){
 
 int main() {
 
-    autocorrelationFileTest();
 
     return 0;
 }
