@@ -96,7 +96,7 @@ void shapiroTest(size_t degree = 255){
 }
 
 int main() {
-    shapiroTest(63);
+    shapiroTest(31);
 
     return 0;
 }
