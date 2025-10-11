@@ -91,12 +91,12 @@ void shapiroTest(size_t degree = 255){
     LittlewoodPolynomial r_poly = LittlewoodPolynomial::randomPolynomial(degree);
     LittlewoodPolynomial s_poly = LittlewoodPolynomial::shapiroPolynomial(degree);
 
-    Tester::saveVectorToFile(r_poly.getCoefficients(), "./files/random_polynimial.txt");
+    Tester::saveVectorToFile(r_poly.getCoefficients(), "./files/random_polynomial.txt");
     Tester::saveVectorToFile(s_poly.getCoefficients(), "./files/shapiro_polynomial.txt");
 }
 
 int main() {
-
+    shapiroTest(63);
 
     return 0;
 }

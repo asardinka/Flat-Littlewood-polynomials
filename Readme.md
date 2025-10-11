@@ -27,9 +27,8 @@
 │       autocorrelation_result.txt
 │       autocorrelation_times.csv
 │       coeffs.txt
-│       flat_poly.txt
-│       random_poly.txt
-│       shapiro_poly.txt
+│       random_polynimial.txt
+│       shapiro_polynomial.txt
 └───src
         Autocorrelation.hpp         # Класс для вычисления автокорреляции
         LittlewoodPolynomial.hpp    # Класс для работы с многочленами Литтлвуда
