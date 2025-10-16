@@ -78,11 +78,8 @@ void autocorrelationFileTest(int repeat = 10) {
     Tester tester(repeat);
     double average_fft = tester(&Autocorrelation<int8_t>::computeFFT, poly);
 
-    std::ofstream fout("./files/autocorrelation_result.txt");
-    for (auto r : result)
-        fout << r << " ";
-    
-    fout.close();
+
+    Tester::saveVectorToFile(result, "./files/autocorrelation_result.txt");
 }
 
 void shapiroTest(size_t degree = 255){
@@ -96,7 +93,7 @@ void shapiroTest(size_t degree = 255){
 }
 
 int main() {
-    shapiroTest(31);
+    autocorrelationFileTest();
 
     return 0;
 }

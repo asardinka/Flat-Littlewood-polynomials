@@ -20,9 +20,10 @@ public:
 
         size_t n = seq.size();
         std::vector<double> result(n, 0.0);
-
+    
+        double sum;
         for (size_t k = 0; k < n; ++k) {
-            double sum = 0.0;
+            sum = 0.0;
             for (size_t i = 0; i + k < n; ++i)
                 sum += static_cast<double>(seq[i]) * static_cast<double>(seq[i + k]);
             result[k] = sum;
