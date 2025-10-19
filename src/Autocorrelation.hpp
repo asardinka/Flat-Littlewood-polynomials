@@ -36,7 +36,7 @@ public:
 
         size_t n = seq.size();
         size_t m = 1;
-        while (m < 2 * n) m <<= 1;
+        while (m < 2 * (n + 1)) m <<= 1;
 
         std::vector<double> in(m, 0.0);
         for (size_t i = 0; i < n; ++i)

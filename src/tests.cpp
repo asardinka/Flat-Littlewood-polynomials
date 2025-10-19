@@ -92,8 +92,15 @@ void shapiroTest(size_t degree = 255){
     Tester::saveVectorToFile(s_poly.getCoefficients(), "./files/shapiro_polynomial.txt");
 }
 
+
 int main() {
-    autocorrelationFileTest();
+
+    // Код Баркера длины 13
+    std::vector<int8_t> test_vec = {+1, +1, +1, +1, +1, -1, -1, +1, +1, -1, +1, -1, +1};
+
+    std::vector<double> autocorr = Autocorrelation<int8_t>::computeFFT(test_vec);
+
+    std::cout << autocorr << std::endl;
 
     return 0;
 }
