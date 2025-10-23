@@ -1,14 +1,6 @@
+// tests.cpp
 // Исполняемый файл для тестов
-
-#include <cmath>
-#include <vector>
-#include <fstream>
-#include <iostream>
-#include <sndfile.h>
-
-#include "Tester.hpp"
-#include "AutoCorrelation.hpp"
-#include "LittlewoodPolynomial.hpp"
+#include "includes.hpp"
 
 template <typename T>
 std::ostream &operator<<(std::ostream &os, const std::vector<T> vec){

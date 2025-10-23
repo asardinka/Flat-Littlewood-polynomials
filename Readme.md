@@ -16,20 +16,23 @@
 
 ###  Структура директорий:
 ```
-│   Readme.md
-│       
+
+│
 ├───files
 │       autocorrelation_result.txt
 │       autocorrelation_times.csv
 │       coeffs.txt
-│       random_polynimial.txt
-│       shapiro_polynomial.txt
+│       random_polynomial.txt
 │       random_polynomial_for_radar_experiment.txt
-│       shapiro_polynomial_radar_experiment.txt
+│       shapiro_polynomial.txt
+│       shapiro_polynomial_for_radar_experiment.txt
+│
 └───src
-        Autocorrelation.hpp         # Класс для вычисления автокорреляции
-        LittlewoodPolynomial.hpp    # Класс для работы с многочленами Литтлвуда
-        Tester.hpp                  # Класс для проведения тестов
-        test.cpp                    # Реализация тестов
-        tests_analysis.ipynb        # Анализ тестов
-        Черновик.docx               # Подробное описание всей работы
+        includes.hpp 
+        Autocorrelation.hpp                            # Класс для вычисления автокорреляции
+        LittlewoodPolynomial.hpp                       # Класс для работы с многочленами Литтлвуда
+        Tester.hpp                                     # Класс для проведения тестов
+        tests.cpp                                      # Реализация тестов
+        tests_analysis.ipynb                           # Анализ тестов
+        radar_echo_simulation.ipynb                    # Моделирование радиолокации
+        МинаковВС_КМБО-01-23.docx                      # Подробное описание всей работы

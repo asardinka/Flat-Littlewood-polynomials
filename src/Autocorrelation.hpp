@@ -1,3 +1,4 @@
+// Autocorrelation.hpp
 // Класс для вычисления автокорреляции последовательности
 // Имеет два алоритма вычисления - Naive и FFT
 // Naive подразумевает попарное умножение всех пар элементов последовательности со сдвигом - сложность O(n^2)
@@ -6,9 +7,6 @@
 // Для вычисления FFT и обратного преобразования используется библиотека FFTW - сложность O(nlogn)
 
 #pragma once
-#include <vector>
-#include <stdexcept>
-#include <fftw3.h>
 
 template <typename T>
 class Autocorrelation

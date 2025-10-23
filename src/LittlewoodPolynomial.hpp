@@ -1,14 +1,10 @@
+// LittlewoodPolynomial.hpp
 // Класс для работы с полиномами Литтлвуда
 // Содержит статические методы для генерации многочленов
 // random - генерирует случаный многочлен с коэффициентами 1 или -1
 // shapiro - генерирует многочлен Шапиро (для степеней 2^n - 1)
 
 #pragma once
-#include <vector>
-#include <cstdint>
-#include <iostream>
-#include <random>
-#include <stdexcept> 
 
 class LittlewoodPolynomial {
 public:
