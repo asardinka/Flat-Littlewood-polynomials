@@ -90,6 +90,9 @@ int main() {
     // Код Баркера длины 13
     std::vector<int8_t> test_vec = {+1, +1, +1, +1, +1, -1, -1, +1, +1, -1, +1, -1, +1};
 
+    LittlewoodPolynomial poly(test_vec);
+    std::cout << poly;
+
     std::vector<double> autocorr = Autocorrelation<int8_t>::computeFFT(test_vec);
 
     std::cout << autocorr << std::endl;

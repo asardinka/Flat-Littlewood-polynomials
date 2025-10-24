@@ -12,7 +12,8 @@ public:
 
     explicit LittlewoodPolynomial(size_t d) : degree(d), coefficients(d + 1, 1) {}
     
-    LittlewoodPolynomial(std::vector<int8_t> coeffs) {
+
+    LittlewoodPolynomial(const std::vector<int8_t>& coeffs) {
         for (auto c : coeffs)
             if (c != 1 && c != -1)
                 throw std::invalid_argument("Coefficients must be 1 or -1");
@@ -51,7 +52,7 @@ public:
 
     operator const std::vector<int8_t>&() const { return coefficients; }
 
-    static LittlewoodPolynomial randomPolynomial(size_t degree) {
+    static LittlewoodPolynomial randomPolynomial(const size_t& degree) {
         LittlewoodPolynomial poly(degree);
         std::random_device rd;
         std::mt19937 gen(rd());
@@ -63,7 +64,7 @@ public:
         return poly;
     }
 
-    static LittlewoodPolynomial shapiroPolynomial(size_t degree) {
+    static LittlewoodPolynomial shapiroPolynomial(const size_t& degree) {
         
         if (((degree + 1) & degree ) != 0) 
             throw std::invalid_argument("Degree must be a power of 2 - 1");
